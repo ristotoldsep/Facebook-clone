@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * Yes since recording this, MD5 is no longer a recommended approach for hashing passwords. It is however very simple and a good way for beginners to learn the concept of hashing before investigating something more secure. If you want something slightly more secure than MD5 without changing much code, try changing MD5 for Sha 512. So replace this line in register_handler (and login_handler):
+$password = md5($password);
+
+With this;
+
+$password = hash("sha512", $password);
+ */
+
 // Declaring variables to prevent errors
 $fname = ""; //First name
 $fname = ""; //Last name
