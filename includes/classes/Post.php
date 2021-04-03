@@ -44,7 +44,7 @@ class Post {
             //Update post count for user
             $num_posts = $this->user_obj->getNumPosts(); //Return the number of posts
             $num_posts++; //Increment the post count for the user
-            $update_query = mysqli_query($this->con, "UPDATE posts SET num_posts='$num_posts' WHERE username='$added_by'"); //Update the user 
+            $update_query = mysqli_query($this->con, "UPDATE users SET num_posts='$num_posts' WHERE username='$added_by'"); //Update the user 
         }
     }
 
@@ -88,100 +88,111 @@ class Post {
                     continue; //go to the next iteration of the loop, if user account is closed
                 }
 
-                if ($num_iterations++ < $start) {
-                    continue;
-                }
+                //To show only friends posts on feed!!
+                $user_logged_obj = new User($this->con, $userLoggedIn);
+                
+                if ($user_logged_obj->isFriend($added_by)) {
 
-                //Once 10 posts have been loaded, break
-                if ($count > $limit) {
-                    break;
-                } else {
-                    $count++;
-                }
+                    if ($num_iterations++ < $start) {
+                        continue;
+                    }
 
-                $user_details_query = mysqli_query($this->con, "SELECT first_name, last_name, profile_pic FROM users WHERE username='$added_by'");
-                $user_row = mysqli_fetch_array($user_details_query);
+                    //Once 10 posts have been loaded, break
+                    if ($count > $limit) {
+                        break;
+                    } else {
+                        $count++;
+                    }
 
-                $first_name = $user_row['first_name'];
-                $last_name = $user_row['last_name'];
-                $profile_pic = $user_row['profile_pic'];
+                    $user_details_query = mysqli_query($this->con, "SELECT first_name, last_name, profile_pic FROM users WHERE username='$added_by'");
+                    $user_row = mysqli_fetch_array($user_details_query);
 
-                //Timeframe
-                $date_time_now = date("Y-m-d H:i:s");
-                $start_date = new DateTime($date_time); //Time of post
-                $end_date = new DateTime($date_time_now); //Current time
-                $interval = $start_date->diff($end_date); //Difference between dates
+                    $first_name = $user_row['first_name'];
+                    $last_name = $user_row['last_name'];
+                    $profile_pic = $user_row['profile_pic'];
 
-                if ($interval->y >= 1) {
-                    if ($interval->y == 1) {
-                        $time_message = $interval->y . " year ago"; //1 year ago
-                    } else {
-                        $time_message = $interval->y . " years ago"; //.. years ago
-                    }
-                } else if ($interval->m >= 1) {
-                    if ($interval->d == 0) {
-                        $days = " ago";
-                    } else if ($interval->d == 1) {
-                        $days = $interval->d . " day ago";
-                    } else {
-                        $days = $interval->d . " days ago";
-                    }
-                        
-                    if ($interval->m == 1) {
-                        $time_message = $interval->m . " month" . $days;
-                    } else {
-                        $time_message = $interval->m . " months" . $days;
-                    }
-                } else if ($interval->d >= 1) {
-                    if ($interval->d == 1) {
-                        $time_message = "Yesterday";
-                    } else {
-                        $time_message = $interval->d . " days ago";
-                    }
-                } else if ($interval->h >= 1) {
-                    if ($interval->h == 1) {
-                        $time_message = $interval->h . " hour ago";
-                    } else {
-                        $time_message = $interval->h . " hours ago";
-                    }
-                } else if ($interval->i >= 1) {
-                    if ($interval->i == 1) {
-                        $time_message = $interval->i . " minute ago";
-                    } else {
-                        $time_message = $interval->i . " minutes ago";
-                    }
-                } else {
-                    if ($interval->s < 30) {
-                        $time_message = "Just now";
-                    } else {
-                        $time_message = $interval->s . " seconds ago";
-                    }
-                }
+                    //Timeframe
+                    $date_time_now = date("Y-m-d H:i:s");
+                    $start_date = new DateTime($date_time); //Time of post
+                    $end_date = new DateTime($date_time_now); //Current time
+                    $interval = $start_date->diff($end_date); //Difference between dates
 
-                //With each iteration, add a post to the html
-                $html .= "<div class='status_post'>
-                            <div class='post_profile_pic'>
-                                <img src='$profile_pic' width='50'>
+                    if ($interval->y >= 1) {
+                        if ($interval->y == 1) {
+                            $time_message = $interval->y . " year ago"; //1 year ago
+                        } else {
+                            $time_message = $interval->y . " years ago"; //.. years ago
+                        }
+                    } else if ($interval->m >= 1) {
+                        if ($interval->d == 0) {
+                            $days = " ago";
+                        } else if ($interval->d == 1) {
+                            $days = $interval->d . " day ago";
+                        } else {
+                            $days = $interval->d . " days ago";
+                        }
+                            
+                        if ($interval->m == 1) {
+                            $time_message = $interval->m . " month" . $days;
+                        } else {
+                            $time_message = $interval->m . " months" . $days;
+                        }
+                    } else if ($interval->d >= 1) {
+                        if ($interval->d == 1) {
+                            $time_message = "Yesterday";
+                        } else {
+                            $time_message = $interval->d . " days ago";
+                        }
+                    } else if ($interval->h >= 1) {
+                        if ($interval->h == 1) {
+                            $time_message = $interval->h . " hour ago";
+                        } else {
+                            $time_message = $interval->h . " hours ago";
+                        }
+                    } else if ($interval->i >= 1) {
+                        if ($interval->i == 1) {
+                            $time_message = $interval->i . " minute ago";
+                        } else {
+                            $time_message = $interval->i . " minutes ago";
+                        }
+                    } else {
+                        if ($interval->s < 30) {
+                            $time_message = "Just now";
+                        } else {
+                            $time_message = $interval->s . " seconds ago";
+                        }
+                    }
+
+                    //With each iteration, add a post to the html
+                    $html .= "<div class='status_post'>
+                                <div class='post_profile_pic'>
+                                    <img src='$profile_pic' width='50'>
+                                </div>
+
+                                <div class='posted_by' style='color: #ACACAC;'>
+                                    <a href='$added_by'>$first_name $last_name </a> $user_to &nbsp;&nbsp;&nbsp;$time_message
+                                </div>
+                                <div id='post_body'>
+                                    $body
+                                    <br>
+                                </div>
                             </div>
+                            <hr>";
+                }
+            } //END WHILE LOOP
 
-                            <div class='posted_by' style='color: #ACACAC;'>
-                                <a href='$added_by'>$first_name $last_name </a> $user_to &nbsp;&nbsp;&nbsp;$time_message
-                            </div>
-                            <div id='post_body'>
-                                $body
-                                <br>
-                            </div>
-                        </div>
-                        <hr>";
-            }
             //If there is some posts still left after 10 have been loaded - for ajax 
             if ($count > $limit) {
                 //Increase the "page" size with a hidden page number, so ajax would load the next posts
                 $html .= "<input type='hidden' class='nextPage' value='" . ($page + 1) . "'> 
                           <input type='hidden' class='noMorePosts' value='false'>"; //Hidden input to keep track of a value
             } else {
-                //If there are no more posts to show, let the user know
-                $html .= "<input type='hidden' class='noMorePosts' value='true'><p style='text-align:center;'>No more posts to show!</p>"; //Hidden input to keep track of a value
+                if ($num_iterations == 0) {
+                    $html .= "<input type='hidden' class='noMorePosts' value='true'><p style='text-align:center;'>No posts to show!</p>"; //Hidden input to keep track 
+                } else {
+                    //If there are no more posts to show, let the user know
+                    $html .= "<input type='hidden' class='noMorePosts' value='true'><p style='text-align:center;'>No more posts to show!</p>"; //Hidden input to keep track of a value
+                }
             }
         }
         //When the loop is done, echo the html
