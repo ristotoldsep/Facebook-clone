@@ -1,18 +1,21 @@
 <?php
 //Objecto oriented PHP - User class
-class Post {
+class Post
+{
     //Will only be able to use these variables inside this class
     private $user_obj;
     private $con;
 
     //Constructor (like in react) - creates the user object upon call = $new_obj = new User($con, $userLoggedIn) ...
-    public function __construct($con, $user) {
+    public function __construct($con, $user)
+    {
         //"THIS" REFERENCES THE CLASS OBJECT
         $this->con = $con;
         $this->user_obj = new User($con, $user); //With each post, create a new instance of User class
     }
 
-    public function submitPost($body, $user_to) {
+    public function submitPost($body, $user_to)
+    {
         $body = strip_tags($body); //Remove html tags
         $body = mysqli_real_escape_string($this->con, $body); //Allow single quotes in strings etc (db will not act on them)
 
@@ -48,7 +51,8 @@ class Post {
         }
     }
 
-    public function loadPostsFriends($data, $limit) {
+    public function loadPostsFriends($data, $limit)
+    {
 
         $page = $data['page'];
         $userLoggedIn = $this->user_obj->getUsername();
@@ -67,7 +71,7 @@ class Post {
             $num_iterations = 0; //Number of results checked (not necessarily posted)
             $count = 1;
 
-            while($row = mysqli_fetch_array($data_query)) {
+            while ($row = mysqli_fetch_array($data_query)) {
                 $id = $row['id'];
                 $body = $row['body'];
                 $added_by = $row['added_by'];
@@ -79,7 +83,7 @@ class Post {
                 } else {
                     $user_to_obj = new User($this->con, $row['user_to']); //New instance of the user to object (To post on someones page!!)
                     $user_to_name = $user_to_obj->getFirstAndLastName();
-                    $user_to = "to <a href='" . $row['user_to'] . "'>" . $user_to_name ."</a>";
+                    $user_to = "to <a href='" . $row['user_to'] . "'>" . $user_to_name . "</a>";
                 }
 
                 //Check if user who posted, has their account closed
@@ -90,7 +94,7 @@ class Post {
 
                 //To show only friends posts on feed!!
                 $user_logged_obj = new User($this->con, $userLoggedIn);
-                
+
                 if ($user_logged_obj->isFriend($added_by)) {
 
                     if ($num_iterations++ < $start) {
@@ -110,6 +114,26 @@ class Post {
                     $first_name = $user_row['first_name'];
                     $last_name = $user_row['last_name'];
                     $profile_pic = $user_row['profile_pic'];
+
+?>
+                    <!-- COMMENTS BLOCK TOGGLE FUNCTION -->
+                    <script>
+                        function toggle<?php echo $id; ?>(event) {
+
+                            var target = $(event.target);
+
+                            if (!target.is('a') && !target.is('button')) {
+                                var element = document.getElementById("toggleComment<?php echo $id; ?>");
+
+                                if (element.style.display == "block")
+                                    element.style.display = "none";
+                                else
+                                    element.style.display = "block";
+                            }
+
+                        }
+                    </script>
+<?php
 
                     //Timeframe
                     $date_time_now = date("Y-m-d H:i:s");
@@ -131,7 +155,7 @@ class Post {
                         } else {
                             $days = $interval->d . " days ago";
                         }
-                            
+
                         if ($interval->m == 1) {
                             $time_message = $interval->m . " month" . $days;
                         } else {
@@ -164,7 +188,7 @@ class Post {
                     }
 
                     //With each iteration, add a post to the html
-                    $html .= "<div class='status_post'>
+                    $html .= "<div class='status_post' onClick='javascript:toggle$id(event)'>
                                 <div class='post_profile_pic'>
                                     <img src='$profile_pic' width='50'>
                                 </div>
@@ -176,6 +200,9 @@ class Post {
                                     $body
                                     <br>
                                 </div>
+                            </div>
+                            <div class='post_comment' id='toggleComment$id' style='display:none;'>
+                                <iframe src='comment_frame.php?post_id=$id' id='comment_iframe' frameborder='0'></iframe>
                             </div>
                             <hr>";
                 }
@@ -198,5 +225,4 @@ class Post {
         //When the loop is done, echo the html
         echo $html;
     }
-
 }

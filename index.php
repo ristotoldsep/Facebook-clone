@@ -4,6 +4,7 @@ include("includes/classes/User.php"); //Call in the USER CLASS
 include("includes/classes/Post.php"); //Call in the Post CLASS
 
 if (isset($_POST['post'])) {
+    
     $post = new Post($con, $userLoggedIn); //Create a new post instance of this class, pass the user who created it
 
     $post->submitPost($_POST['post_text'], 'none'); //Submit the post via submit method in the Post.php class file, $user_to is none cause it is the index page
