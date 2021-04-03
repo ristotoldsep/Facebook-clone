@@ -115,7 +115,7 @@ class Post
                     $last_name = $user_row['last_name'];
                     $profile_pic = $user_row['profile_pic'];
 
-?>
+                    ?>
                     <!-- COMMENTS BLOCK TOGGLE FUNCTION -->
                     <script>
                         function toggle<?php echo $id; ?>(event) {
@@ -133,7 +133,11 @@ class Post
 
                         }
                     </script>
-<?php
+                    <?php
+
+                    //Get the comment number count
+                    $comments_check = mysqli_query($this->con, "SELECT * FROM comments WHERE post_id='$id'");
+                    $comments_check_num = mysqli_num_rows($comments_check);
 
                     //Timeframe
                     $date_time_now = date("Y-m-d H:i:s");
@@ -199,6 +203,12 @@ class Post
                                 <div id='post_body'>
                                     $body
                                     <br>
+                                    <br>
+                                    <br>
+                                </div>
+
+                                <div class='newsfeedPostOptions'>
+                                    Comments($comments_check_num)&nbsp;&nbsp;&nbsp;
                                 </div>
                             </div>
                             <div class='post_comment' id='toggleComment$id' style='display:none;'>

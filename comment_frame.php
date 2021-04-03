@@ -1,18 +1,5 @@
-<html lang="en">
+ <?php
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title></title>
-    <!-- My CSS -->
-    <link rel="stylesheet" href="assets/css/style.css">
-</head>
-
-<body>
-
-    <?php 
-    
     require 'config/config.php'; //getting $con var
     include("includes/classes/User.php"); //Call in the USER CLASS
     include("includes/classes/Post.php"); //Call in the Post CLASS
@@ -31,6 +18,26 @@
     }
     ?>
 
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <!-- My CSS -->
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+
+<body>
+
+    <style>
+        * {
+            font-size: 12px;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+    </style>
+
     <script>
         //Basic toggle function to show/hide the comment section
         function toggle() {
@@ -44,7 +51,7 @@
         }
     </script>
 
-    <?php 
+    <?php
     //Get id of post that the use wants to comment on
     if (isset($_GET['post_id'])) {
         $post_id = $_GET['post_id'];
@@ -73,8 +80,8 @@
     </form>
 
     <!-- Load comments -->
-    <?php 
-    $get_comments = mysqli_query($con, "SELECT * FROM comments WHERE post_id='$post_id' ORDER BY id ASC");
+    <?php
+    $get_comments = mysqli_query($con, "SELECT * FROM comments WHERE post_id='$post_id' ORDER BY id DESC");
     $count = mysqli_num_rows($get_comments);
 
     if ($count != 0) {
@@ -140,14 +147,28 @@
 
             $user_obj = new User($con, $posted_by);
 
+            ?>
+            <!-- Comment section HTML -->
+            <div class="comment_section">
+            <a href="<?php echo $posted_by; ?>" target="_parent">
+                <img src="<?php echo $user_obj->getProfilePic(); ?>" alt="Comment_profile_pic" title="<?php echo $posted_by; ?>" style="float:left; height: 30px;">
+            </a>
+            <a href="<?php echo $posted_by; ?>" target="_parent">
+                <b><?php echo $user_obj->getFirstAndLastName(); ?> </b>
+            </a>
+            &nbsp;&nbsp;&nbsp;&nbsp; <?php echo $time_message . "<br>" . $comment_body; ?>
+            <hr>
+            </div>
+
+            <?php
         }
+    } else {
+        echo "<center><br><br>No Comments to Show!</center>";
     }
-    
+
     ?>
 
-    <div class="comment_section">
-        <a href="<?php echo $posted_by; ?>" target="_parent">rix_rix</a>
-    </div>
+  
 
 </body>
 
