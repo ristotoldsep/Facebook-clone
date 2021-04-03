@@ -24,6 +24,8 @@ if (isset($_SESSION['username'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Facebook</title>
 
+    <!-- jquery js -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <!-- Font awesome -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <!-- Bootstrap CSS -->

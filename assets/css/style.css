@@ -130,9 +130,26 @@ textarea:focus {
     font-size: 90%;
     position: absolute;
     margin: 0;
+    outline: 0;
+
 }
 
 .post_form input[type="submit"]:active {
     padding: 5px 4px 4px 5px;
     color:#eee;
 } 
+
+.status_post {
+    width: 96%;
+    font-size:  15px;
+    padding: 0px 5px;
+    min-height: 75px;
+}
+.post_profile_pic {
+    float: left;
+    margin-right: 6px;
+}
+
+.post_profile_pic img {
+    border-radius: 50%;
+}
