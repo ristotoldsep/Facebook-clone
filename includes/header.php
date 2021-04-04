@@ -32,6 +32,7 @@ if (isset($_SESSION['username'])) {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
     <!-- My CSS -->
     <link rel="stylesheet" href="assets/css/style.css">
+    
 
 </head>
 
@@ -40,6 +41,24 @@ if (isset($_SESSION['username'])) {
     <div class="top_bar">
         <div class="logo">
             <a href="index.php">Facebook</a>
+        </div>
+
+        <!-- SEARCH FORM -->
+        <div class="search">
+
+            <form action="search.php" method="GET" name="search_form">
+                <input type="text" onkeyup="getLiveSearchUsers(this.value, '<?php echo $userLoggedIn; ?>')" name="q" placeholder="Search..." autocomplete="off" id="search_text_input">
+
+                <div class="button_holder">
+                    <img src="assets/images/icons/magnifier.png" alt="">
+                </div>
+            </form>
+            
+
+            <div class="search_results"></div>
+
+            <div class="search_results_footer_empty"></div>
+
         </div>
 
         <nav>

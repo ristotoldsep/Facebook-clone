@@ -4,7 +4,7 @@ include("includes/classes/User.php"); //Call in the USER CLASS
 include("includes/classes/Post.php"); //Call in the Post CLASS
 
 if (isset($_POST['post'])) {
-    
+
     $post = new Post($con, $userLoggedIn); //Create a new post instance of this class, pass the user who created it
 
     $post->submitPost($_POST['post_text'], 'none'); //Submit the post via submit method in the Post.php class file, $user_to is none cause it is the index page
@@ -165,7 +165,8 @@ if (isset($_POST['post'])) {
     }); */
 </script>
 
-
+<!-- FOOTER SCRIPTS -->
+<script src="assets/js/demo.js"></script>
 <!-- Bootstrap js -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
 </div> <!-- End of wrapper div in header.php -->
