@@ -7,7 +7,7 @@ if (isset($_SESSION['username'])) {
     //Get user details from db
     $user_details_query = mysqli_query($con, "SELECT * FROM users WHERE username='$userLoggedIn'");
 
-    $user = mysqli_fetch_array($user_details_query); //return array from db
+    $user = mysqli_fetch_array($user_details_query); //return array from db (info about the logged in user)
 
 } else {
     header("Location: register.php"); //If not logged in, redirect to register
