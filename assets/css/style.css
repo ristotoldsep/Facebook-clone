@@ -7,9 +7,14 @@
     src: url(../fonts/Bellota-BoldItalic.otf);
 }
 
+html {
+    height: 100%; /* might be unnecessary */
+}
+
 body {
     line-height: 17px;
     background-color: #E6EAE8;
+    height: 100%;
 }
 
 a {
@@ -70,6 +75,8 @@ nav a:hover {
     padding: 0 10px;
     width: 75%;
     min-width: 950px;
+
+    height: calc(100% - 40px); /* might be unnecessary */
 }
 
 .column {
@@ -266,4 +273,66 @@ textarea:focus {
     border-bottom: none;
     border-top: none;
     margin-top: 25px;
+}
+
+.profile_left {
+    top: -10px;
+    width: 17%;
+    max-width: 240px;
+    min-width: 130px;
+    height: 100%;
+    float: left;
+    position: relative;
+    background-color: #37B0E9;
+    border-right: 10px solid #83D6FE;
+    color: #CBEAF8;
+    margin-right: 20px;
+}
+
+.profile_left img {
+    min-width: 80px;
+    width: 55%;
+    margin: 20px;
+    border: 5px solid #83D6FE;
+    border-radius: 100%;
+}
+
+.profile_info {
+    display: list-item;
+    background-color: #2980b9;
+    width: 100%;
+    padding: 10px 0 10px 0;
+}
+
+.profile_info p {
+    margin: 0 0 0 20px;
+    word-wrap: break-word;
+}
+
+.danger {
+    background-color: #e74c3c;
+}
+.warning {
+    background-color: #f0ad4e;
+}
+.default {
+    background-color: #bdc3c7;
+}
+.success {
+    background-color: #2ecc71;
+}
+.info {
+    background-color: #3498db;
+}
+.deep_blue {
+    background-color: #0043f0;
+}
+
+.profile_left input[type="submit"] {
+    width: 90%;
+    height: 30px;
+    border-radius: 5px;
+    margin: 7px 0 0 7px;
+    border: none;
+    color: #fff;
 }

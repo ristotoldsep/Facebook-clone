@@ -35,7 +35,7 @@ function getLiveSearchUsers(value, user) {
     });
 }
 
-// Hide the search when 
+// Hide the search when clicked elsewhere
 $(document).click(function (e) {
     // Search results box
     if (e.target.class != "search_results" && e.target.id != "search_text_input") {
