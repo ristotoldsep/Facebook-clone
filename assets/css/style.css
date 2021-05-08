@@ -314,6 +314,7 @@ textarea:focus {
 }
 .warning {
     background-color: #f0ad4e;
+    font-size:14px;
 }
 .default {
     background-color: #bdc3c7;
@@ -335,4 +336,33 @@ textarea:focus {
     margin: 7px 0 0 7px;
     border: none;
     color: #fff;
+}
+
+#accept_button {
+    width: 20%;
+    height: 28px;
+    border-radius: 5px;
+    margin: 5px;
+    border: none;
+    color: #fff;
+    background-color: #2ecc71;
+}
+#ignore_button {
+    width: 20%;
+    height: 28px;
+    border-radius: 5px;
+    margin: 5px;
+    border: none;
+    color: #fff;
+    background-color: #e74c3c;
+}
+
+.delete_button {
+    height: 22px;
+    width: 22px;
+    padding: 0;
+    float: right;
+    border-radius: 4px;
+    right: -15px;
+    position: relative;
 }

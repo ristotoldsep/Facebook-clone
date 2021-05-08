@@ -108,6 +108,12 @@ class Post
                         $count++;
                     }
 
+                    // Delete post button
+                    if ($userLoggedIn == $added_by)
+                        $delete_button = "<button class='delete_button btn-danger' id='post$id'>X</button>";
+                    else
+                        $delete_button = "";
+
                     $user_details_query = mysqli_query($this->con, "SELECT first_name, last_name, profile_pic FROM users WHERE username='$added_by'");
                     $user_row = mysqli_fetch_array($user_details_query);
 
@@ -115,7 +121,7 @@ class Post
                     $last_name = $user_row['last_name'];
                     $profile_pic = $user_row['profile_pic'];
 
-                    ?>
+?>
                     <!-- COMMENTS BLOCK TOGGLE FUNCTION -->
                     <script>
                         function toggle<?php echo $id; ?>(event) {
@@ -133,7 +139,7 @@ class Post
 
                         }
                     </script>
-                    <?php
+                <?php
 
                     //Get the comment number count
                     $comments_check = mysqli_query($this->con, "SELECT * FROM comments WHERE post_id='$id'");
@@ -161,9 +167,9 @@ class Post
                         }
 
                         if ($interval->m == 1) {
-                            $time_message = $interval->m . " month" . $days;
+                            $time_message = $interval->m . " month " . $days;
                         } else {
-                            $time_message = $interval->m . " months" . $days;
+                            $time_message = $interval->m . " months " . $days;
                         }
                     } else if ($interval->d >= 1) {
                         if ($interval->d == 1) {
@@ -199,6 +205,7 @@ class Post
 
                                 <div class='posted_by' style='color: #ACACAC;'>
                                     <a href='$added_by'>$first_name $last_name </a> $user_to &nbsp;&nbsp;&nbsp;$time_message
+                                    $delete_button
                                 </div>
                                 <div id='post_body'>
                                     $body
@@ -217,6 +224,30 @@ class Post
                             </div>
                             <hr>";
                 }
+                ?>
+                <script>
+                    /* var deletePost = document.querySelector('#post<?php echo $id; ?>');
+                    deletePost.addEventListener("click", function() {
+                        alert("test <?php //echo $id; 
+                                    ?>");
+                    }); */
+                    $(document).ready(function() {
+                        $('#post<?php echo $id; ?>').on('click', function() {
+                            // Comes with bootstrap JS
+                            bootbox.confirm("Are you sure you want to delete this post?", function(result) {
+                                $.post("includes/form_handlers/delete_post.php?post_id=<?php echo $id; ?>", {
+                                    result: result
+                                });
+
+                                if (result) { //if result is true/exists
+                                    location.reload()
+                                }
+                            });
+                        });
+                    });
+                </script>
+<?php
+
             } //END WHILE LOOP
 
             //If there is some posts still left after 10 have been loaded - for ajax 

@@ -1,4 +1,6 @@
 <?php require 'config/config.php'; //getting $con var
+include("includes/classes/User.php"); //Call in the USER CLASS
+include("includes/classes/Post.php"); //Call in the Post CLASS
 
 //If user is logged in 
 if (isset($_SESSION['username'])) {
@@ -24,8 +26,15 @@ if (isset($_SESSION['username'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Facebook</title>
 
+    <!-- Javascript -->
+
     <!-- jquery js -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <!-- Bootstrap js -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="assets/js/bootbox.min.js"></script>
+    <script src="assets/js/facebook.js"></script>
+
     <!-- Font awesome -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <!-- Bootstrap CSS -->
@@ -51,7 +60,7 @@ if (isset($_SESSION['username'])) {
                     <img src="assets/images/icons/magnifier.png" alt="">
                 </div>
             </form>
-            
+
 
             <div class="search_results"></div>
 
@@ -74,7 +83,7 @@ if (isset($_SESSION['username'])) {
             <a href="#">
                 <i class="fa fa-bell-o fa-lg" aria-hidden="true"></i>
             </a>
-            <a href="#">
+            <a href="requests.php">
                 <i class="fa fa-users fa-lg" aria-hidden="true"></i>
             </a>
             <a href="#">

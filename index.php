@@ -1,7 +1,6 @@
 <?php
-include("includes/header.php"); //Header file with the db connection etc
-include("includes/classes/User.php"); //Call in the USER CLASS
-include("includes/classes/Post.php"); //Call in the Post CLASS
+include("includes/header.php"); //Header file with the db connection etc, also includes Classes like User and Post
+
 
 if (isset($_POST['post'])) {
 
@@ -165,10 +164,8 @@ if (isset($_POST['post'])) {
     }); */
 </script>
 
-<!-- FOOTER SCRIPTS -->
-<script src="assets/js/demo.js"></script>
-<!-- Bootstrap js -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
+
+
 </div> <!-- End of wrapper div in header.php -->
 </body>
 
