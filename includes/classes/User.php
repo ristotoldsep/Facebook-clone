@@ -106,12 +106,36 @@ class User {
         $query = mysqli_query($this->con, "INSERT INTO friend_requests VALUES('', '$user_to', '$user_from')");
     }
 
-    public function getFriendArray()
-    {
+    public function getFriendArray() {
         $username = $this->user['username'];
         $query = mysqli_query($this->con, "SELECT friend_array FROM users WHERE username='$username'");
         $row = mysqli_fetch_array($query);
         return $row['friend_array'];
+    }
+
+    public function getMutualFriends($user_to_check) {
+        $mutualFriends = 0; //Initialize
+
+        //Get the logged in user friends
+        $user_array = $this->user['friend_array'];
+        $user_array_explode = explode(",", $user_array); //Splits a string and looks for commas
+
+        //Get the profile's mutual friends that user is on
+        $query = mysqli_query($this->con, "SELECT friend_array FROM users WHERE username='$user_to_check'");
+        $row = mysqli_fetch_array($query);
+        $user_to_check_array = $row['friend_array'];
+        $user_to_check_array_explode = explode(",", $user_to_check_array); //Splits a string and looks for commas
+
+        //Count the matching friends
+        foreach($user_array_explode as $i) {
+            foreach($user_to_check_array_explode as $j) {
+                if ($i == $j && $i != "") {
+                    $mutualFriends++;
+                }
+
+            }
+        }
+        return $mutualFriends;
     }
     
     
