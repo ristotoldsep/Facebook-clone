@@ -16,6 +16,16 @@ $(document).ready(function() {
     });
 });
 
+function getUsers(value, user) {
+    //Make ajax request
+    $.post("includes/handlers/ajax_friend_search.php", {query: value, userLoggedIn: user}, function(data) {
+
+        //Append the returned data to results div
+        $(".results").html(data);
+        
+    });
+}
+
 
 // Make search input larger on bigger screens when clicked/focused on
 $('#search_text_input').focus(function() {
