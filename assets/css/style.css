@@ -377,3 +377,60 @@ textarea:focus {
 .profile_info_bottom {
     margin: 10px 0 0 7px;
 }
+
+#message_textarea {
+    width: 80%;
+    margin-right: 8px;
+    border-radius: 5px;
+    font-size: 12px;
+    border: 1px solid #D3D3D3;
+    margin-top:5px;
+}
+
+#message_submit {
+    height: 41px;
+    width: 120px;
+    margin: 0;
+    margin-top:5px;
+    position: absolute;
+    border: none;
+    background-color: #20AAE5;
+    /* float:right; */
+    border-radius: 5px;
+    color: #fdf;
+    font-family: 'Bellota-BoldItalic', sans-serif;
+    text-shadow: #73B6E2 .5px .5px 2px;
+    cursor:pointer;
+}
+
+.message {
+    border-radius: 5px;
+    padding: 5px 10px;
+    display: inline-block;
+    color: #fff;
+    border: 1px solid #000;
+    /* clear: both; */
+}
+
+.message#blue  {
+    background-color: #3498db;
+    border-color: #2980b9;
+    float: right;
+    margin-bottom: 4px;
+    margin-right: 10px;
+}
+.message#green  {
+    background-color: #2ecc71;
+    border-color: #2980b9;
+    float: left;
+    margin-bottom: 4px;
+}
+
+.loaded_messages {
+    height: 65%;
+    min-height: 300px;
+    max-height: 400px;
+    overflow: scroll;
+    margin-bottom: 10px;
+    padding: 4px;
+}

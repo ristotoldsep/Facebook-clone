@@ -1,6 +1,7 @@
 <?php require 'config/config.php'; //getting $con var
 include("includes/classes/User.php"); //Call in the USER CLASS
 include("includes/classes/Post.php"); //Call in the Post CLASS
+include("includes/classes/Message.php"); //Call in the Message CLASS
 
 //If user is logged in 
 if (isset($_SESSION['username'])) {
