@@ -3,6 +3,8 @@ include("includes/header.php"); //Also includes classes like User and Post
 
 // session_destroy();
 
+$message_obj = new Message($con, $userLoggedIn);
+
 // Profile actual url (we hid it with htaccess) /fb/profile.php?profile_username=rix_rix
 
 if (isset($_GET['profile_username'])) {
@@ -26,6 +28,23 @@ if (isset($_POST['add_friend'])) {
 
 if (isset($_POST['respond_request'])) {
     header("Location: requests.php"); //Redirect to requests page!
+}
+
+if (isset($_POST['post_message'])) {
+    if (isset($_POST['message_body'])) {
+        $body = mysqli_real_escape_string($con, $_POST['message_body']);
+        $date = date("Y-m-d H:i:s");
+        $message_obj->sendMessage($username, $body, $date);
+    }
+
+    $link = '#profileTabs a[href="#messages_div"]';
+    echo "
+        <script>
+            $(function() {
+                $('" . $link . "').tab('show');
+            });
+        </script>
+    ";
 }
 
 ?>
@@ -80,20 +99,73 @@ if (isset($_POST['respond_request'])) {
 
     <?php
     //If logged in user is not on their own profile
-        if ($userLoggedIn != $username) {
-            echo '<div class="profile_info_bottom">';
-                echo "Mutual friends: " . $logged_in_user_obj->getMutualFriends($username);
-            echo "</div>";
-        }
+    if ($userLoggedIn != $username) {
+        echo '<div class="profile_info_bottom">';
+        echo "Mutual friends: " . $logged_in_user_obj->getMutualFriends($username);
+        echo "</div>";
+    }
     ?>
 
 </div>
 
 <div class="profile_main_column column">
-    <div class="posts_area">
-        <!-- Posts are going to be loaded via ajax, 10 at a time -->
+
+    <!-- TABS -->
+    <ul class="nav nav-tabs" id="profileTabs" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" id="home-tab" data-toggle="tab" href="#newsfeed_div" role="tab" aria-controls="newsfeed_div" aria-selected="true">Newsfeed</a>
+        </li>
+        <!-- <li class="nav-item">
+            <a class="nav-link" id="profile-tab" data-toggle="tab" href="#about_div" role="tab" aria-controls="about_div" aria-selected="false">About</a>
+        </li> -->
+        <li class="nav-item">
+            <a class="nav-link" id="contact-tab" data-toggle="tab" href="#messages_div" role="tab" aria-controls="messages_div" aria-selected="false">Messages</a>
+        </li>
+    </ul>
+
+    <!-- TABS CONTENT -->
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="newsfeed_div" role="tabpanel" aria-labelledby="home-tab">
+            <div class="posts_area">
+                <!-- Posts are going to be loaded via ajax, 10 at a time -->
+            </div>
+            <img id="loading" src="assets/images/icons/loading.gif" alt="Loading">
+        </div>
+       <!--  <div class="tab-pane fade" id="about_div" role="tabpanel" aria-labelledby="profile-tab">
+
+        </div> -->
+        <div class="tab-pane fade" id="messages_div" role="tabpanel" aria-labelledby="contact-tab">
+            <?php
+            //GET MESSAGES 
+           
+                echo '<h4>You and <a href="' . $username . '">' . $profile_user_obj->getFirstAndLastName() . '</a></h4><hr><br>';
+                echo "<div class='loaded_messages' id='scroll_messages'>";
+                echo $message_obj->getMessages($username);
+                echo "</div>";
+            
+            ?>
+
+            <div class="message_post">
+                <!-- action blank = this page -->
+                <form action="" method="POST">
+                    <?php
+                    
+                        echo "<textarea name='message_body' id='message_textarea' placeholder='Write your message...'></textarea>";
+                        echo "<input type='submit' name='post_message' class='info' id='message_submit' value='Send'>";
+
+                    ?>
+                </form>
+            </div>
+
+            <script>
+                // Always scroll to most recent message
+                var div = document.getElementById("scroll_messages");
+                div.scrollTop = div.scrollHeight;
+            </script>
+        </div>
     </div>
-    <img id="loading" src="assets/images/icons/loading.gif" alt="Loading">
+
+
 </div>
 
 <!-- Modal -->

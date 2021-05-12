@@ -83,7 +83,7 @@ if (isset($_SESSION['username'])) {
             <a href="index.php">
                 <i class="fa fa-home fa-lg" aria-hidden="true"></i>
             </a>
-            <a href="#">
+            <a href="messages.php">
                 <i class="fa fa-envelope fa-lg" aria-hidden="true"></i>
             </a>
             <a href="#">
