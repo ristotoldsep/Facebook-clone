@@ -28,13 +28,13 @@ if ($query != "") {
     while($row = mysqli_fetch_array($usersReturnedQuery)) {
         $user = new User($con, $userLoggedIn); //get all the user details + extra methods
 
-       /*  if ($row['username'] != $userLoggedIn) {
+        if ($row['username'] != $userLoggedIn) {
             $mutual_friends = $user->getMutualFriends($row['username']) . " friends in common";
         } else {
             $mutual_friends = "";
-        } */
+        }
 
-        $mutual_friends = "risto!"; //Delete when method is made
+        // $mutual_friends = "risto!"; //Delete when method is made
 
         // Echo out the search result html
         echo "
@@ -46,7 +46,7 @@ if ($query != "") {
 
                     <div class='liveSearchText'>
                         " . $row['first_name'] . " " . $row['last_name'] . "
-                        <p>" . $row['username'] . "</p>
+                        <p style='margin:0;'>" . $row['username'] . "</p>
                         <p id='grey'>" . $mutual_friends . "</p>
                     </div>
                 </a>

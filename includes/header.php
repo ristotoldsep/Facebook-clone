@@ -60,6 +60,7 @@ if (isset($_SESSION['username'])) {
         <div class="search">
 
             <form action="search.php" method="GET" name="search_form">
+                <!-- AJAX request in facebook.js -->
                 <input type="text" onkeyup="getLiveSearchUsers(this.value, '<?php echo $userLoggedIn; ?>')" name="q" placeholder="Search..." autocomplete="off" id="search_text_input">
 
                 <div class="button_holder">
@@ -83,7 +84,8 @@ if (isset($_SESSION['username'])) {
             <a href="index.php">
                 <i class="fa fa-home fa-lg" aria-hidden="true"></i>
             </a>
-            <a href="messages.php">
+            <!-- Open Messages Dropdown for the logged in user, type = message -->
+            <a href="javascript:void(0);" onclick="getDropDownData('<?php echo $userLoggedIn; ?>', 'message')">
                 <i class="fa fa-envelope fa-lg" aria-hidden="true"></i>
             </a>
             <a href="#">
@@ -99,6 +101,12 @@ if (isset($_SESSION['username'])) {
                 <i class="fa fa-sign-out fa-lg" aria-hidden="true"></i>
             </a>
         </nav>
+
+        <div class="dropdown_data_window">
+
+        </div>
+        <input type="hidden" name="" id="dropdown_data_type" value="">
+
     </div>
 
     <div class="wrapper">

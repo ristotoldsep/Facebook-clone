@@ -7,8 +7,7 @@ class Message
     private $con;
 
     //Constructor (like in react) - creates the user object upon call = $new_obj = new User($con, $userLoggedIn) ...
-    public function __construct($con, $user)
-    {
+    public function __construct($con, $user) {
         //"THIS" REFERENCES THE CLASS OBJECT
         $this->con = $con;
         $this->user_obj = new User($con, $user); //With each post, create a new instance of User class
@@ -169,6 +168,85 @@ class Message
                                 <p id='grey' style='margin: 0;'>" . $latest_message_details[0] . $split . "</p>
                                 </div>
                                 </a>";
+        }
+
+        return $return_string;
+    }
+
+    public function getConvosDropdown($data, $limit) {
+
+        $page = $data['page'];
+        $userLoggedIn = $this->user_obj->getUsername();
+        $return_string = "";
+        $convos = array();
+
+        if ($page == 1)
+            $start = 0; //Start from the first post
+        else
+            $start = ($page - 1) * $limit; //For infinite scrolling, to load new objects from the last position
+
+        $set_viewed_query = mysqli_query($this->con, "UPDATE messages SET viewed='yes' WHERE user_to='$userLoggedIn'");
+
+        //Most recent one at the top
+        $query = mysqli_query($this->con, "SELECT user_to, user_from FROM messages WHERE user_to='$userLoggedIn' OR user_from='$userLoggedIn' ORDER BY id DESC");
+
+        while ($row = mysqli_fetch_array($query)) {
+            //Push user to array that are not the logged in user
+            $user_to_push = ($row['user_to'] != $userLoggedIn) ? $row['user_to'] : $row['user_from'];
+
+            //Check that the user is not already in the array
+            if (!in_array($user_to_push, $convos)) {
+                array_push($convos, $user_to_push);
+            }
+        }
+
+        $num_iterations = 0; //Number of messages checked
+        $count = 1; //Number of messages posted
+
+        foreach ($convos as $username) {
+
+            // 2 ways of doing if else when incrementing
+            if ($num_iterations++ < $start)
+                continue; // if it doesn't reach a start point yet, continue
+
+            if ($count > $limit)
+                break; //if we've reached our limit of how many messages to load, we want to break the loop
+            else
+                $count++;
+
+            $is_unread_query = mysqli_query($this->con, "SELECT opened FROM messages WHERE user_to='$userLoggedIn' AND user_from='$username' ORDER BY id DESC");
+            $row = mysqli_fetch_array($is_unread_query);
+
+            $style = (isset($row['opened']) && $row['opened'] == 'no') ? "background-color: #DDEDFF;" : ""; //If message unread, gray bg-color, ADDED ISSET TO FIRST CHECK THIS VALUE EXISTS
+
+            $user_found_obj = new User($this->con, $username);
+
+            //Get the array
+            $latest_message_details = $this->getLatestMessage($userLoggedIn, $username);
+
+            // Splice message to 12 characters and append "..."
+            // [1] =  array_push($details_array, $body); - Body
+            $dots = (strlen($latest_message_details[1]) >= 12) ? "..." : "";
+            $split = str_split($latest_message_details[1], 12);
+            $split = $split[0] . $dots;
+
+            $return_string .= "<a href='messages.php?u=$username'>
+                                    <div class='user_found_messages' style='" . $style . "'>
+                                        <img src='" . $user_found_obj->getProfilePic() . "' style='border-radius: 5px; margin-right:5px;'>
+                                        " . $user_found_obj->getFirstAndLastName() . "
+                                        <span class='timestamp_smaller' id='grey'>" . $latest_message_details[2] . "</span>
+                                        <p id='grey' style='margin: 0;'>" . $latest_message_details[0] . $split . "</p>
+                                    </div>
+                                </a>";
+        }
+
+        // IF all posts were loaded
+        if ($count > $limit) {
+            $return_string .= "<input type='hidden' class='nextPageDropDownData' value='" . ($page + 1) . "'>
+                                <input type='hidden' class='noMoreDropdownData' value='false'>";
+        }
+        else {
+            $return_string .= "<input type='hidden' class='noMoreDropdownData' value='true'><p style='text-align:center;'>No more messages to load!</p>";
         }
 
         return $return_string;

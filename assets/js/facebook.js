@@ -26,6 +26,42 @@ function getUsers(value, user) {
     });
 }
 
+function getDropDownData(user, type) {
+    // If the dropdown is currently closed
+    if ($(".dropdown_data_window").css("height") == "0px") {
+
+        var pageName; /* Which page we are sending the ajax request */
+
+        if(type == "notification") {
+            // Notification type
+            pageName = "ajax_load_notifications.php";
+        }
+        else if (type == "message") {
+            pageName = "ajax_load_messages.php";
+            $("span").remove("#unread_message");
+        }
+
+        var ajaxReq = $.ajax({
+            url: "includes/handlers/" + pageName,
+            type: "POST",
+            data: "page=1&userLoggedIn=" + user,
+            cache: false,
+            
+            // Append the messages to the div
+            success: function(response) {
+                $(".dropdown_data_window").html(response);
+                $(".dropdown_data_window").css({"padding" : "0px", "height" : "280px"});
+                $("#dropdown_data_type").val(type);
+            }
+        });
+    }
+    // IF header dropdown div is already open
+    else {
+        $(".dropdown_data_window").html("");
+        $(".dropdown_data_window").css({ "padding": "0px", "height": "0px" });
+    }
+}
+
 
 // Make search input larger on bigger screens when clicked/focused on
 $('#search_text_input').focus(function() {
