@@ -217,7 +217,9 @@ class Message
             $is_unread_query = mysqli_query($this->con, "SELECT opened FROM messages WHERE user_to='$userLoggedIn' AND user_from='$username' ORDER BY id DESC");
             $row = mysqli_fetch_array($is_unread_query);
 
-            $style = (isset($row['opened']) && $row['opened'] == 'no') ? "background-color: #DDEDFF;" : ""; //If message unread, gray bg-color, ADDED ISSET TO FIRST CHECK THIS VALUE EXISTS
+            $bgstyle = (isset($row['opened']) && $row['opened'] == 'no') ? "background-color: #DDEDFF;" : ""; //If message unread, gray bg-color, ADDED ISSET TO FIRST CHECK THIS VALUE EXISTS
+
+            $pstyle = (isset($row['opened']) && $row['opened'] == 'no') ? "color: #000; font-weight: 500" : ""; //If message unread, gray bg-color, ADDED ISSET TO FIRST CHECK THIS VALUE EXISTS
 
             $user_found_obj = new User($this->con, $username);
 
@@ -231,25 +233,34 @@ class Message
             $split = $split[0] . $dots;
 
             $return_string .= "<a href='messages.php?u=$username'>
-                                    <div class='user_found_messages' style='" . $style . "'>
+                                    <div class='user_found_messages' style='" . $bgstyle . "'>
                                         <img src='" . $user_found_obj->getProfilePic() . "' style='border-radius: 5px; margin-right:5px;'>
                                         " . $user_found_obj->getFirstAndLastName() . "
                                         <span class='timestamp_smaller' id='grey'>" . $latest_message_details[2] . "</span>
-                                        <p id='grey' style='margin: 0;'>" . $latest_message_details[0] . $split . "</p>
+                                        <p id='grey' style='margin: 0; " . $pstyle . "'>" . $latest_message_details[0] . $split . "</p>
                                     </div>
                                 </a>";
         }
 
         // IF all posts were loaded
         if ($count > $limit) {
-            $return_string .= "<input type='hidden' class='nextPageDropDownData' value='" . ($page + 1) . "'>
+            $return_string .= "<input type='hidden' class='nextPageDropdownData' value='" . ($page + 1) . "'>
                                 <input type='hidden' class='noMoreDropdownData' value='false'>";
         }
         else {
-            $return_string .= "<input type='hidden' class='noMoreDropdownData' value='true'><p style='text-align:center;'>No more messages to load!</p>";
+            $return_string .= "<input type='hidden' class='noMoreDropdownData' value='true'><p class='nomoremessages' style='text-align:center;'>No more messages to load!</p>";
         }
 
         return $return_string;
+    }
+
+    public function getUnreadNumber() {
+        // Return the number of unread messages for the user!
+        $userLoggedIn = $this->user_obj->getUsername();
+        
+        $query = mysqli_query($this->con, "SELECT * FROM messages WHERE viewed='no' AND user_to='$userLoggedIn'");
+
+        return mysqli_num_rows($query);
     }
     
 }

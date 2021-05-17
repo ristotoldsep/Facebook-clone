@@ -490,3 +490,36 @@ textarea:focus {
 .tab-content {
     margin-top: 25px;
 }
+
+div.dropdown_data_window {
+    
+    background-color: #fff;
+    border: 1px solid #DADADA;
+    border-radius: 0 0 8px 8px;
+    border-top: none;
+    width: 300px;
+    position: absolute;
+    right: 10px;
+    top: 40px;
+    overflow: scroll;
+}
+
+.nomoremessages {
+    margin-top: 10px;
+}
+
+.notification_badge {
+    padding: 2px 5px;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1;
+    color: #fff;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    background-color: #F00;
+    border-radius: 50%;
+    position: absolute;
+    left: 9px;
+    top: -5px;
+}

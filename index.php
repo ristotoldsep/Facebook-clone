@@ -49,6 +49,7 @@ if (isset($_POST['post'])) {
     <img id="loading" src="assets/images/icons/loading.gif" alt="Loading">
 </div>
 
+<!-- INFINITE SCROLLING -->
 <script>
     $(function() {
 

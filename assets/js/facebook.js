@@ -50,7 +50,7 @@ function getDropDownData(user, type) {
             // Append the messages to the div
             success: function(response) {
                 $(".dropdown_data_window").html(response);
-                $(".dropdown_data_window").css({"padding" : "0px", "height" : "280px"});
+                $(".dropdown_data_window").css({"padding" : "0px", "height" : "280px", "border" : "1px solid #DADADA"});
                 $("#dropdown_data_type").val(type);
             }
         });
@@ -58,7 +58,7 @@ function getDropDownData(user, type) {
     // IF header dropdown div is already open
     else {
         $(".dropdown_data_window").html("");
-        $(".dropdown_data_window").css({ "padding": "0px", "height": "0px" });
+        $(".dropdown_data_window").css({ "padding": "0px", "height": "0px", "border": "none"});
     }
 }
 
