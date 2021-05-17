@@ -15,7 +15,9 @@ class Post
     }
 
     public function submitPost($body, $user_to)
-    {
+    {   
+        // $userLoggedIn = $this->user_obj->getUsername(); //Get logged in user 
+        
         $body = strip_tags($body); //Remove html tags
         $body = mysqli_real_escape_string($this->con, $body); //Allow single quotes in strings etc (db will not act on them)
 
@@ -32,7 +34,7 @@ class Post
             //Get username
             $added_by = $this->user_obj->getUsername(); //Get the getusername method
 
-            //If user is not on own profile, user_to is 'none'
+            //If user is on own profile, user_to is 'none'
             if ($user_to == $added_by) {
                 $user_to = "none";
             }
@@ -43,6 +45,10 @@ class Post
             $returned_id = mysqli_insert_id($this->con); //Returns the id of the post submitted
 
             //Insert notification
+            if ($user_to != "none") {
+                $notification = new Notification($this->con, $added_by);
+                $notification->insertNotification($returned_id, $user_to, 'profile_post');
+            }
 
             //Update post count for user
             $num_posts = $this->user_obj->getNumPosts(); //Return the number of posts

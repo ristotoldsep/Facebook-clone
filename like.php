@@ -3,6 +3,8 @@
     require 'config/config.php'; //getting $con var
     include("includes/classes/User.php"); //Call in the USER CLASS
     include("includes/classes/Post.php"); //Call in the Post CLASS
+    include("includes/classes/Notification.php"); //Call in the Notification CLASS
+
 
     //If user is logged in 
     if (isset($_SESSION['username'])) {
@@ -24,6 +26,7 @@
 
     $get_likes = mysqli_query($con, "SELECT likes, added_by FROM posts WHERE id='$post_id'");
     $row = mysqli_fetch_array($get_likes);
+
     $total_likes = $row['likes']; //Number of likes
     $user_liked = $row['added_by']; //User who liked some post
 
@@ -42,6 +45,10 @@
         $insert_user = mysqli_query($con, "INSERT INTO likes VALUES ('', '$userLoggedIn', '$post_id')");
 
         //Insert notification
+        if ($user_liked != $userLoggedIn) { //If user didn't like their own post
+            $notification = new Notification($con, $userLoggedIn);
+            $notification->insertNotification($post_id, $user_liked, "like");
+        }
     }
 
     //Unlike button

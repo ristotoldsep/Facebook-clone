@@ -2,6 +2,7 @@
 include("includes/classes/User.php"); //Call in the USER CLASS
 include("includes/classes/Post.php"); //Call in the Post CLASS
 include("includes/classes/Message.php"); //Call in the Message CLASS
+include("includes/classes/Notification.php"); //Call in the Notification CLASS
 
 //If user is logged in 
 if (isset($_SESSION['username'])) {
@@ -80,6 +81,10 @@ if (isset($_SESSION['username'])) {
                 //Unrrad messages
                 $messages = new Message($con, $userLoggedIn);
                 $num_messages = $messages->getUnreadNumber();
+
+                //Unrrad notifications
+                $notifications = new Notification($con, $userLoggedIn);
+                $num_notifications = $notifications->getUnreadNumber();
             ?>
 
             <a href="<?php echo $userLoggedIn; ?>">
@@ -99,8 +104,13 @@ if (isset($_SESSION['username'])) {
                 ?>
 
             </a>
-            <a href="#">
+            <!-- Notifications dropdown -->
+            <a href="javascript:void(0);" onclick="getDropDownData('<?php echo $userLoggedIn; ?>', 'notification')">
                 <i class="fa fa-bell-o fa-lg" aria-hidden="true"></i>
+                <?php
+                    if ($num_notifications > 0)
+                        echo '<span class="notification_badge" id="unread_notification">' . $num_notifications . '</span>';
+                ?>
             </a>
             <a href="requests.php">
                 <i class="fa fa-users fa-lg" aria-hidden="true"></i>
