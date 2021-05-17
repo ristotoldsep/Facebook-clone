@@ -523,3 +523,19 @@ div.dropdown_data_window {
     left: 9px;
     top: -5px;
 }
+
+.resultDisplayNotification {
+    height: auto;
+    color: #1485DB;
+    padding-bottom: 8px;
+}
+.resultDisplayNotification img {
+    height: 40px;
+    border-radius: 5px;
+    margin: 1px 12px 0px 2px;
+    float: left;
+}
+.timestamp_smaller {
+    font-size: 85%;
+    margin: 0;
+}
