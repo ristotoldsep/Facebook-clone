@@ -69,7 +69,7 @@ $('#search_text_input').focus(function() {
     console.log("done");
     
     if (window.matchMedia( "(min-width: 800px)" ).matches) {
-        $(this).animate({width: '300px'}, 500);
+        $(this).animate({width: '500px'}, 500);
     }
     
 });

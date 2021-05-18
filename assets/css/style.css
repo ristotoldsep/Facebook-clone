@@ -490,6 +490,40 @@ textarea:focus {
     
 }
 
+.search_result {
+	padding: 10px;
+    height: 100px;
+}
+
+.result_profile_pic {
+	float: left;
+    margin-right: 10px;
+}
+
+.searchPageFriendButtons {
+	float: right;
+}
+
+.searchPageFriendButtons input[type="submit"] {
+	border: none;
+    padding: 7px 12px;
+    border-radius: 5px;
+    color: #fff;
+}
+
+.search_results_footer{
+	padding: 7px 4px 0px 4px;
+    height: 30px;
+    border: 1px solid #DADADA;
+    border-top: none;
+    background-color: #20AAE5;
+    text-align: center;
+}
+
+.search_results_footer a {
+	color: #fff;
+}
+
 .tab-content {
     margin-top: 25px;
 }
