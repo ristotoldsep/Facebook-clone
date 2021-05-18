@@ -49,19 +49,22 @@ class Message
 
         $query = mysqli_query($this->con, "UPDATE messages SET opened='yes' WHERE user_to='$userLoggedIn' AND user_from='$otherUser'");
 
-        //Get messages as long as they're related to these two users
         $get_messages_query = mysqli_query($this->con, "SELECT * FROM messages WHERE (user_to='$userLoggedIn' AND user_from='$otherUser') OR (user_from='$userLoggedIn' AND user_to='$otherUser')");
 
-        while($row = mysqli_fetch_array($get_messages_query)) {
+        while ($row = mysqli_fetch_array($get_messages_query)) {
             $user_to = $row['user_to'];
             $user_from = $row['user_from'];
             $body = $row['body'];
+            $date = $row['date'];
+            $friend = new User($this->con, $otherUser);
+            $friend_name = $friend->getFirstName();
 
-            $div_top = ($user_to == $userLoggedIn) ? "<div class='message' id='green'>" : "<div class='message' id='blue'>";
-            $data = $data . $div_top . $body . "</div><br><br>";
+            $info = ($user_to === $userLoggedIn) ? $friend_name . " on " . date("M d Y H:i", strtotime($date)) : "You" .  " on " . date("M d Y H:i", strtotime($date));
+
+            $div_top = ($user_to == $userLoggedIn) ? "<div class='message_g' id='green'>" : "<div class='message_b' id='blue'>";
+            $data = $data . $div_top . "<span>" . $info . "</span>" . $body . "</div><br><br>";
         }
 
-        //Return all the message divs
         return $data;
     }
 
@@ -203,44 +206,40 @@ class Message
         $num_iterations = 0; //Number of messages checked
         $count = 1; //Number of messages posted
 
-        foreach ($convos as $username) {
-
-            // 2 ways of doing if else when incrementing
-            if ($num_iterations++ < $start)
-                continue; // if it doesn't reach a start point yet, continue
-
-            if ($count > $limit)
-                break; //if we've reached our limit of how many messages to load, we want to break the loop
-            else
-                $count++;
-
-            $is_unread_query = mysqli_query($this->con, "SELECT opened FROM messages WHERE user_to='$userLoggedIn' AND user_from='$username' ORDER BY id DESC");
-            $row = mysqli_fetch_array($is_unread_query);
-
-            $bgstyle = (isset($row['opened']) && $row['opened'] == 'no') ? "background-color: #DDEDFF;" : ""; //If message unread, gray bg-color, ADDED ISSET TO FIRST CHECK THIS VALUE EXISTS
-
-            $pstyle = (isset($row['opened']) && $row['opened'] == 'no') ? "color: #000; font-weight: 500" : ""; //If message unread, gray bg-color, ADDED ISSET TO FIRST CHECK THIS VALUE EXISTS
-
-            $user_found_obj = new User($this->con, $username);
-
-            //Get the array
-            $latest_message_details = $this->getLatestMessage($userLoggedIn, $username);
-
-            // Splice message to 12 characters and append "..."
-            // [1] =  array_push($details_array, $body); - Body
-            $dots = (strlen($latest_message_details[1]) >= 12) ? "..." : "";
-            $split = str_split($latest_message_details[1], 12);
-            $split = $split[0] . $dots;
-
-            $return_string .= "<a href='messages.php?u=$username'>
-                                    <div class='user_found_messages' style='" . $bgstyle . "'>
-                                        <img src='" . $user_found_obj->getProfilePic() . "' style='border-radius: 5px; margin-right:5px;'>
-                                        " . $user_found_obj->getFirstAndLastName() . "
-                                        <span class='timestamp_smaller' id='grey'>" . $latest_message_details[2] . "</span>
-                                        <p id='grey' style='margin: 0; " . $pstyle . "'>" . $latest_message_details[0] . $split . "</p>
-                                    </div>
-                                </a>";
-        }
+      foreach($convos as $username) {
+ 
+		if($num_iterations++ < $start)
+			continue;
+		if($count > $limit)
+			break;
+		else
+			$count++;
+                       //Changes start from here
+		$is_unread_query = mysqli_query($this->con, "SELECT * FROM messages WHERE (user_to='$userLoggedIn' AND user_from='$username') OR (user_from='$userLoggedIn' AND user_to='$username') ORDER BY id DESC");
+		$row = mysqli_fetch_array($is_unread_query);
+		$style = ($row['opened'] == 'no') ? "background-color: #DDEDFF" : "";
+ 
+		$user_found_obj = new User($this->con, $username);
+		$latest_message_details = $this->getLatestMessage($userLoggedIn, $username);
+ 
+		$dots = (strlen($latest_message_details[1]) >= 12) ? "..." : "";
+		$split = str_split($latest_message_details[1], 12);
+		$split = $split[0] . $dots;
+ 
+		if($row['opened'] === 'yes' && $row['user_from'] === $userLoggedIn && $row['user_to'] === $username) {
+ 
+			$latest_message_details[2] .= " ✓";
+		}
+ 
+		if ($row['opened'] === 'no' && $row['user_from'] === $userLoggedIn && $row['user_to'] === $username) {
+ 
+                        $style = "";
+			$latest_message_details[2] .= " ←";
+		}
+                       //Changes end here
+		$return_string .= "<a href='messages.php?u=$username'> <div class='user_found_messages' style='" . $style . "'><img src='" . $user_found_obj->getProfilePic() . "' style='border-radius: 5px; margin-right: 5px;'>" . $user_found_obj->getFirstAndLastName() . "<br><span class='timestamp_smaller' id='grey'>" . $latest_message_details[2] . "</span><p id='grey' style='margin: 0;'>" . $latest_message_details[0] . $split  . "</p></div></a>";
+			
+	}
 
         // IF all posts were loaded
         if ($count > $limit) {
