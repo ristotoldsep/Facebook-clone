@@ -14,7 +14,7 @@ class Post
         $this->user_obj = new User($con, $user); //With each post, create a new instance of User class
     }
 
-    public function submitPost($body, $user_to)
+    public function submitPost($body, $user_to, $imageName)
     {
         // $userLoggedIn = $this->user_obj->getUsername(); //Get logged in user 
 
@@ -60,7 +60,7 @@ class Post
             }
 
             //Insert post to db
-            $query = mysqli_query($this->con, "INSERT INTO posts VALUES ('', '$body', '$added_by', '$user_to', '$date_added', 'no', 'no', '0')");
+            $query = mysqli_query($this->con, "INSERT INTO posts VALUES ('', '$body', '$added_by', '$user_to', '$date_added', 'no', 'no', '0', '$imageName')");
 
             $returned_id = mysqli_insert_id($this->con); //Returns the id of the post submitted
 
@@ -152,8 +152,7 @@ class Post
         }
     }
 
-    public function loadPostsFriends($data, $limit)
-    {
+    public function loadPostsFriends($data, $limit) {
 
         $page = $data['page'];
         $userLoggedIn = $this->user_obj->getUsername();
@@ -177,6 +176,7 @@ class Post
                 $body = $row['body'];
                 $added_by = $row['added_by'];
                 $date_time = $row['date_added'];
+                $imagePath = $row['image'];
 
                 //Prepare user_to string so it cn be included even if not posted to a user
                 if ($row['user_to'] == "none") {
@@ -222,7 +222,7 @@ class Post
                     $last_name = $user_row['last_name'];
                     $profile_pic = $user_row['profile_pic'];
 
-?>
+                    ?>
                     <!-- COMMENTS BLOCK TOGGLE FUNCTION -->
                     <script>
                         function toggle<?php echo $id; ?>(event) {
@@ -298,6 +298,16 @@ class Post
                         }
                     }
 
+                    //Did user post images?
+                    if ($imagePath != "") {
+                        $imageDiv = "<div class='postedImage'>
+                                        <img src='" . $imagePath . "'>
+                                    </div>";
+                    }
+                    else {
+                        $imageDiv = "";
+                    }
+
                     //With each iteration, add a post to the html
                     $html .= "<div class='status_post' onClick='javascript:toggle$id(event)'>
                                 <div class='post_profile_pic'>
@@ -311,6 +321,7 @@ class Post
                                 <div id='post_body'>
                                     $body
                                     <br>
+                                    $imageDiv
                                     <br>
                                     <br>
                                 </div>

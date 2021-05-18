@@ -4,11 +4,50 @@ include("includes/header.php"); //Header file with the db connection etc, also i
 
 if (isset($_POST['post'])) {
 
-    $post = new Post($con, $userLoggedIn); //Create a new post instance of this class, pass the user who created it
+    $uploadOk = true;
+    $imageName = $_FILES['fileToUpload']['name']; //Get file NAME
+    $error_message = "";
 
-    $post->submitPost($_POST['post_text'], 'none'); //Submit the post via submit method in the Post.php class file, $user_to is none cause it is the index page
+    if ($imageName != "") {
+        $targetDir = "assets/images/posts/";
+        $imageName = $targetDir . uniqid() . basename($imageName); //So two people adding file with the same name does not get overwritten
+        $imageFileType = pathinfo($imageName, PATHINFO_EXTENSION); //png, jpg etc...
+        
+        if ($_FILES['fileToUpload']['size'] > 1000000) {
+            $errorMessage = "Sorry, your file is too large!";
+            $uploadOk = false;
+        }
 
-    header("location: index.php"); //Removes the resubmission of form when refreshing the page!
+        if (strtolower($imageFileType) != "jpeg" && strtolower($imageFileType) != "png" && strtolower($imageFileType) != "jpg") {
+            $errorMessage = "Sorry, only jpeg, jpg and png files are allowed.";
+            $uploadOk = false;
+        }
+
+        if ($uploadOk) {
+            if (move_uploaded_file($_FILES['fileToUpload']['tmp_name'], $imageName)) {
+                //Image uploaded okay
+            }
+            else {
+                //Img did not upload
+                $uploadOk = false;
+            }
+        }
+    }
+
+    if ($uploadOk) {
+        $post = new Post($con, $userLoggedIn); //Create a new post instance of this class, pass the user who created it
+
+        $post->submitPost($_POST['post_text'], 'none', $imageName); //Submit the post via submit method in the Post.php class file, $user_to is none cause it is the index page
+
+        header("location: index.php"); //Removes the resubmission of form when refreshing the page!
+    }
+    else {
+        echo "<div style='text-align: center;' class='alert alert-danger'>
+            " . $errorMessage . "
+        </div>";
+    }
+
+    
 }
 
 ?>
@@ -34,7 +73,9 @@ if (isset($_POST['post'])) {
 
 <!-- MAIN COLUMN -->
 <div class="main_column column">
-    <form class="post_form" action="index.php" method="POST">
+    <!-- enctype allows forms to process file data -->
+    <form class="post_form" action="index.php" method="POST" enctype="multipart/form-data">
+        <input type="file" name="fileToUpload" id="fileToUpload"><br><br>
         <textarea name="post_text" id="post_text" placeholder="Got something to say?"></textarea>
         <input type="submit" name="post" id="post_button" value="Post">
         <hr>

@@ -57,4 +57,5 @@ include("includes/form_handlers/settings_handler.php"); //Handles buttons functi
         <!-- Check input, enter username to close... (IDEA) -->
         <input type="submit" name="close_account" id="close_account" value="Close Account" class="danger settings_submit">
     </form>
+    <br>
 </div>

@@ -280,13 +280,11 @@ textarea:focus {
 }
 
 .profile_left {
-    top: -10px;
+    position: fixed;
+    top: 40px;
+    bottom: 0px;
+    height: auto;
     width: 17%;
-    max-width: 240px;
-    min-width: 130px;
-    height: 100%;
-    float: left;
-    position: relative;
     background-color: #37B0E9;
     border-right: 10px solid #83D6FE;
     color: #CBEAF8;
@@ -374,8 +372,10 @@ textarea:focus {
 .profile_main_column {
     min-width: 675px;
     float: left;
+    left: 300px;
     width: 70%;
-    z-index: -1;
+    z-index: 1;
+    position: relative;
 }
 
 .profile_info_bottom {
@@ -638,4 +638,11 @@ div.dropdown_data_window {
     padding: 7px 12px;
     border-radius: 5px;
     color: #fff;
+}
+
+.postedImage img {
+    max-height: 300px;
+    max-width: 100%;
+    display: block;
+    margin: 5px auto;
 }

@@ -5,7 +5,7 @@ include("includes/header.php");
 ?>
 
 <div class="main_column column" id="main_column">
-    <h4>Requests sent</h4>
+    <h4>Requests sent</h4><br>
     <?php
     $pending = mysqli_query($con, "SELECT user_to, id FROM friend_requests WHERE user_from='$userLoggedIn'");
     if (mysqli_num_rows($pending) > 0) {
@@ -23,11 +23,11 @@ include("includes/header.php");
                         </a>
                         <a href='" . $user['username'] . "'>
                             " . $user['first_name'] . " " . $user['last_name'] . "
-                        </a>$delete_button<br>";
+                        </a>$delete_button<br><hr>";
             }
         }
     } else {
-        echo "<p>You have no pending requests right now.";
+        echo "<p>You have no pending requests right now.<br>";
     }
     ?>
     <script>
@@ -43,11 +43,11 @@ include("includes/header.php");
         });
     </script>
     <hr>
-    <h4>Friend Requests</h4>
+    <h4>Friend Requests</h4><br>
     <?php
     $query = mysqli_query($con, "SELECT * FROM friend_requests WHERE user_to='$userLoggedIn'");
     if (mysqli_num_rows($query) == 0) {
-        echo "You have no friend requests at the moment!";
+        echo "You have no friend requests at the moment!<br><br>";
     } else {
         while ($row = mysqli_fetch_array($query)) {
             $user_from = $row['user_from'];
