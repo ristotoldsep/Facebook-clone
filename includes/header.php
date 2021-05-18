@@ -78,13 +78,17 @@ if (isset($_SESSION['username'])) {
 
         <nav>
             <?php
-                //Unrrad messages
-                $messages = new Message($con, $userLoggedIn);
-                $num_messages = $messages->getUnreadNumber();
+            //Unrrad messages
+            $messages = new Message($con, $userLoggedIn);
+            $num_messages = $messages->getUnreadNumber();
 
-                //Unrrad notifications
-                $notifications = new Notification($con, $userLoggedIn);
-                $num_notifications = $notifications->getUnreadNumber();
+            //Unrrad notifications
+            $notifications = new Notification($con, $userLoggedIn);
+            $num_notifications = $notifications->getUnreadNumber();
+
+            //Friend requests number
+            $user_obj = new User($con, $userLoggedIn);
+            $num_requests = $user_obj->getNumberOfFriendRequests();
             ?>
 
             <a href="<?php echo $userLoggedIn; ?>">
@@ -99,8 +103,8 @@ if (isset($_SESSION['username'])) {
             <a href="javascript:void(0);" onclick="getDropDownData('<?php echo $userLoggedIn; ?>', 'message')">
                 <i class="fa fa-envelope fa-lg" aria-hidden="true"></i>
                 <?php
-                    if ($num_messages > 0)
-                        echo '<span class="notification_badge" id="unread_message">' . $num_messages . '</span>';
+                if ($num_messages > 0)
+                    echo '<span class="notification_badge" id="unread_message">' . $num_messages . '</span>';
                 ?>
 
             </a>
@@ -108,12 +112,16 @@ if (isset($_SESSION['username'])) {
             <a href="javascript:void(0);" onclick="getDropDownData('<?php echo $userLoggedIn; ?>', 'notification')">
                 <i class="fa fa-bell-o fa-lg" aria-hidden="true"></i>
                 <?php
-                    if ($num_notifications > 0)
-                        echo '<span class="notification_badge" id="unread_notification">' . $num_notifications . '</span>';
+                if ($num_notifications > 0)
+                    echo '<span class="notification_badge" id="unread_notification">' . $num_notifications . '</span>';
                 ?>
             </a>
             <a href="requests.php">
                 <i class="fa fa-users fa-lg" aria-hidden="true"></i>
+                <?php
+                if ($num_requests > 0)
+                    echo '<span class="notification_badge" id="unread_requests">' . $num_requests . '</span>';
+                ?>
             </a>
             <a href="#">
                 <i class="fa fa-cog fa-lg" aria-hidden="true"></i>

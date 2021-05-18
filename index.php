@@ -12,6 +12,7 @@ if (isset($_POST['post'])) {
 }
 
 ?>
+<!-- USER DETAILS -->
 <div class="user_details column">
     <!-- comes from header page, rewrite in .htaccess -->
     <a href="<?php echo $userLoggedIn; ?>">
@@ -31,6 +32,7 @@ if (isset($_POST['post'])) {
     </div>
 </div>
 
+<!-- MAIN COLUMN -->
 <div class="main_column column">
     <form class="post_form" action="index.php" method="POST">
         <textarea name="post_text" id="post_text" placeholder="Got something to say?"></textarea>
@@ -164,8 +166,6 @@ if (isset($_POST['post'])) {
         }); //End  $(window).scroll(function())
     }); */
 </script>
-
-
 
 </div> <!-- End of wrapper div in header.php -->
 </body>

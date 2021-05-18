@@ -207,6 +207,10 @@ textarea:focus {
     cursor:pointer;
 }
 
+.comment_like {
+    cursor:pointer;
+}
+
 .newsfeedPostOptions {
     padding: 0;
     text-decoration: none;
@@ -538,4 +542,11 @@ div.dropdown_data_window {
 .timestamp_smaller {
     font-size: 85%;
     margin: 0;
+}
+
+.delReq {
+    position: relative;
+    float: right;
+    right: 10%;
+    border-radius: 4px;
 }
