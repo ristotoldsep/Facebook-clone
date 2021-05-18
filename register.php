@@ -13,16 +13,17 @@ require 'includes/form_handlers/login_handler.php'; //login php
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register Page</title>
+    <link rel="icon" href="https://cdn1.iconfinder.com/data/icons/logotypes/32/square-facebook-512.png">
+    <title>Facebook - Register Page</title>
     <link rel="stylesheet" href="assets/css/register_style.css">
 </head>
 
 <body>
 
-    <?php 
+    <?php
     //To show error messages correctly! FIX FIX FIX FIX FIX FIX FIX 
-        if (isset($_POST['register_button'])) { //If register button is pressed
-            echo "
+    if (isset($_POST['register_button'])) { //If register button is pressed
+        echo "
                 <script>
                     const loginForm = document.getElementById('first');
                     const registerForm = document.getElementById('second');
@@ -32,7 +33,7 @@ require 'includes/form_handlers/login_handler.php'; //login php
                     
                 </script>
             ";
-        }
+    }
     ?>
 
     <div class="wrapper">
@@ -45,9 +46,9 @@ require 'includes/form_handlers/login_handler.php'; //login php
                 <form action="register.php" method="POST">
                     <!-- Login Form -->
                     <input type="email" name="log_email" placeholder="Email Address" value="<?php
-                        if (isset($_SESSION['log_email'])) {
-                            echo $_SESSION['log_email'];
-                        } ?>" required><br>
+                                                                                            if (isset($_SESSION['log_email'])) {
+                                                                                                echo $_SESSION['log_email'];
+                                                                                            } ?>" required><br>
                     <input type="password" name="log_password" placeholder="Password" required><br>
 
                     <?php if (in_array("Email or password was incorrect<br>", $error_array)) echo "Email or password was incorrect<br>"; ?>
@@ -64,32 +65,32 @@ require 'includes/form_handlers/login_handler.php'; //login php
                 <form action="register.php" method="POST">
                     <!-- First name -->
                     <input type="text" name="reg_fname" placeholder="First Name" value="<?php
-                        if (isset($_SESSION['reg_fname'])) {
-                            echo $_SESSION['reg_fname'];
-                        } ?>" required>
+                                                                                        if (isset($_SESSION['reg_fname'])) {
+                                                                                            echo $_SESSION['reg_fname'];
+                                                                                        } ?>" required>
                     <br>
                     <?php if (in_array("Your first name must be between 2 and 25 characters<br>", $error_array)) echo "Your first name must be between 2 and 25 characters<br>"; ?>
 
                     <!-- Last name -->
                     <input type="text" name="reg_lname" placeholder="Last Name" value="<?php
-                        if (isset($_SESSION['reg_lname'])) {
-                            echo $_SESSION['reg_lname'];
-                        } ?>" required>
+                                                                                        if (isset($_SESSION['reg_lname'])) {
+                                                                                            echo $_SESSION['reg_lname'];
+                                                                                        } ?>" required>
                     <br>
                     <?php if (in_array("Your last name must be between 2 and 25 characters<br>", $error_array)) echo "Your last name must be between 2 and 25 characters<br>"; ?>
 
                     <!-- Email -->
                     <input type="email" name="reg_email" placeholder="Email" value="<?php
-                        if (isset($_SESSION['reg_email'])) {
-                            echo $_SESSION['reg_email'];
-                        } ?>" required>
+                                                                                    if (isset($_SESSION['reg_email'])) {
+                                                                                        echo $_SESSION['reg_email'];
+                                                                                    } ?>" required>
                     <br>
 
                     <!-- Email confirm -->
                     <input type="email" name="reg_email2" placeholder="Confirm Email" value="<?php
-                        if (isset($_SESSION['reg_email2'])) {
-                            echo $_SESSION['reg_email2'];
-                        } ?>" required>
+                                                                                                if (isset($_SESSION['reg_email2'])) {
+                                                                                                    echo $_SESSION['reg_email2'];
+                                                                                                } ?>" required>
                     <br>
                     <?php if (in_array("Email already in use<br>", $error_array)) echo "Email already in use<br>";
                     else if (in_array("Invalid email format<br>", $error_array)) echo "Invalid email format<br>";
