@@ -29,6 +29,23 @@ class Post
         //Does not let the user enter just spaces into the db
         if ($check_empty != "") {
 
+            //Split the post at spaces into an array
+            $body_array = preg_split("/\s+/", $body);
+
+            foreach($body_array as $index => $value) {
+
+                if (strpos($value, "www.youtube.com/watch?v=") !== false) {
+
+                    //Replace watch with embed, so it would show yt embed box
+                    $value = preg_replace("!watch\?v=!", "embed/", $value);
+                    $value = "<br><iframe width=\'420\' height=\'315\' src=\'" . $value . "\'></iframe><br>";
+
+                    $body_array[$index] = $value;
+                } 
+            }
+
+            $body = implode(" ", $body_array); //Make a string of the array!
+
             //Current date & time
             $date_added = date("Y-m-d H:i:s");
             //Get username

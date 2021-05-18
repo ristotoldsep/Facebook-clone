@@ -615,5 +615,27 @@ div.dropdown_data_window {
     background-color:#000;
     color:#fff;
     z-index: 10;
- 
+}
+
+#small_profile_pic {
+    height: 55px;
+    margin: 1px 12px 0 2px;
+    float: left;
+}
+
+.settings_input {
+    border: 1px solid #ccc;
+    height: 25px;
+    padding: 4px 6px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    font-size: 14px;
+    line-height: 20px;
+}
+
+.settings_submit {
+    border: none;
+    padding: 7px 12px;
+    border-radius: 5px;
+    color: #fff;
 }
