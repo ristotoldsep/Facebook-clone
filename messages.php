@@ -65,7 +65,7 @@ if (isset($_POST['post_message'])) {
         $check_mess = mysqli_fetch_array($open_query);
         $check_latest = mysqli_fetch_array($latest_query_rec);
 
-        $seen = $check_mess['opened'] === 'yes' ? "Seen" : ""; //check if he opened my last message
+        $seen = (isset($check_mess['opened']) && $check_mess['opened'] === 'yes') ? "Seen" : ""; //check if he opened my last message
 
         if ($user_to == $userLoggedIn)
             echo "<h4>Just you</h4><hr><br>";

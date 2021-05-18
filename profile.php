@@ -143,13 +143,13 @@ if (isset($_POST['post_message'])) {
             $check_mess = mysqli_fetch_array($open_query);
             $check_latest = mysqli_fetch_array($latest_query_rec);
 
-            $seen = $check_mess['opened'] === 'yes' ? "Seen" : ""; //check if he opened my last message
+            $seen = (isset($check_mess['opened']) && $check_mess['opened'] === 'yes') ? "Seen" : ""; //check if he opened my last message
 
             echo "<h4>&nbsp;You and <a href='" . $username . "'>" . $profile_user_obj->getFirstAndLastName() . "</a></h4><hr><br>";
             echo "<div class='loaded messages' id='scroll_messages'>";
             echo $message_obj->getMessages($username);
 
-            if ($check_mess['id'] > $check_latest['id']) //check if mine is the last message in the conversation
+            if (isset($check_mess['id']) && isset($check_latest['id']) && $check_mess['id'] > $check_latest['id']) //check if mine is the last message in the conversation
                 echo "<div style='float:right; position:relative; bottom:5px; right:3px;'>" . $seen . "</div><br>";
 
             echo "</div>";
