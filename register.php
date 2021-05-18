@@ -39,6 +39,7 @@ require 'includes/form_handlers/login_handler.php'; //login php
         <div class="login-box">
             <div class="login_header">
                 <h1>Facebook</h1>
+                <?php echo $_SERVER['SERVER_NAME']; ?>
                 <p>Login or sign up below!</p>
             </div>
             <div id="first">
